@@ -1,24 +1,18 @@
 const express = require('express');
-const {
-    createItinerary,
-    getAllItineraries,
-    getItineraryById,
-    updateItinerary,
-    deleteItinerary
-} = require('../controllers/itineraryController');
+const itineraryController = require('../controllers/itineraryController');
+const upload = require('../middleware/multerConfig');
 const path = require('path');
-
 const router = express.Router();
 
 // Define routes for itineraries
-router.post('/', createItinerary);
-router.get('/', getAllItineraries);
-router.get('/:id', getItineraryById);
-router.put('/:id', updateItinerary);
-router.delete('/:id', deleteItinerary);
+router.post('/itineraries', upload.array('photos', 5), itineraryController.createItinerary);
+router.get('/itineraries', itineraryController.getAllItineraries);
+router.get('/itineraries/:id', itineraryController.getItineraryById);
+router.put('/itineraries/:id', itineraryController.updateItinerary);
+router.delete('/itineraries/:id', itineraryController.deleteItinerary);
 
 // Route to serve a PDF for a given itinerary ID
-router.get('/:id/pdf', (req, res) => {
+router.get('/itineraries/:id/pdf', (req, res) => {
     const itineraryId = req.params.id;
     
     // Path to the PDF file (update the path based on your file structure)

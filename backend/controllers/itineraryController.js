@@ -3,7 +3,17 @@ const Itinerary = require('../models/Itinerary');
 // Create a new itinerary
 exports.createItinerary = async (req, res) => {
     try {
-        const itinerary = new Itinerary(req.body);
+        const itinerary = new Itinerary({
+            name: req.body.name,
+            // altitude: req.body.altitude,
+            pickup: req.body.pickup,
+            drop: req.body.drop,
+            totalDays: req.body.totalDays,
+            price: req.body.price,
+            // inclusion: req.body.inclusion,
+            description: req.body.description,
+            photos: req.files.map(file => file.path), // Save the file paths to MongoDB
+          });
         await itinerary.save();
         res.status(201).json(itinerary);
     } catch (error) {

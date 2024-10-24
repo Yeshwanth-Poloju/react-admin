@@ -29,7 +29,7 @@ const ViewItinerary = () => {
         navigate(`/edititinerary/${id}`);
     };
 
-    const handlePrintPDF = (itinerary) => {
+    const handlePrintPDF = async (itinerary) => {
         const doc = new jsPDF();
 
         // Add content to the PDF
@@ -40,8 +40,42 @@ const ViewItinerary = () => {
         doc.text(`Drop: ${itinerary.drop}`, 10, 50);
         doc.text(`Description: ${itinerary.description}`, 10, 60);
 
+        // Handle adding images to the PDF
+        const photoX = 10; // X coordinate for the photos
+        let photoY = 70; // Y coordinate for the photos, starting below the description
+
+        // Loop through the photos and add them one by one
+        for (const photo of itinerary.photos) {
+            const fullPhotoUrl = `http://localhost:5000/${photo}`; // Construct full URL
+            try {
+                const image = await loadImage(fullPhotoUrl); // Load image as base64
+                doc.addImage(image, 'JPEG', photoX, photoY, 60, 40); // Adjust size as needed
+                photoY += 50; // Adjust Y position for the next image
+            } catch (error) {
+                console.error('Failed to load image for PDF:', error);
+            }
+        }
+
         // Save the PDF and trigger download
         doc.save(`itinerary-${itinerary._id}.pdf`);
+    };
+
+    // Helper function to load an image and return base64 data
+    const loadImage = (url) => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous'; // Handle CORS issues if necessary
+            img.src = url;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                resolve(canvas.toDataURL('image/jpeg'));
+            };
+            img.onerror = (error) => reject(error);
+        });
     };
 
     useEffect(() => {
@@ -54,6 +88,7 @@ const ViewItinerary = () => {
             <table>
                 <thead>
                     <tr>
+                        <th>Photo</th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Total Days</th>
@@ -66,6 +101,16 @@ const ViewItinerary = () => {
                 <tbody>
                     {itineraries.map(itinerary => (
                         <tr key={itinerary._id}>
+                            <td>
+                                {itinerary.photos.map((photo, index) => (
+                                    <img
+                                        key={index}
+                                        src={`http://localhost:5000/${photo}`} // Adjust the URL as needed
+                                        alt={`Itinerary photo ${index + 1}`}
+                                        style={{ width: '50px', height: '50px', margin: '5px' }} // Adjust size and margin as needed
+                                    />
+                                ))}
+                            </td>
                             <td>{itinerary.name}</td>
                             <td>${itinerary.price}</td>
                             <td>{itinerary.totalDays}</td>

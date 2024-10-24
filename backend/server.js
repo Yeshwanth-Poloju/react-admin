@@ -28,7 +28,7 @@ app.use('/api', trekRoutes);
 app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/adventures', adventureRoutes);
 // Use itinerary routes
-app.use('/api/itineraries', itineraryRoutes);
+app.use('/api', itineraryRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
