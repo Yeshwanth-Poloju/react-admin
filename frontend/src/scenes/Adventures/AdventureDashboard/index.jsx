@@ -113,7 +113,7 @@ const AdventureDashboard = () => {
               <img
                 key={index}
                 src={`http://localhost:5000/${photo}`}
-                alt={`Adventure photo ${index + 1}`}
+                alt={`Adventure ${index + 1}`}
                 style={{ width: '100%', marginTop: '10px' }}
               />
             ))}

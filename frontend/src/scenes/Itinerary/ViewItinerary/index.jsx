@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 
 const ViewItinerary = () => {
     const [itineraries, setItineraries] = useState([]);
+    const [expandedItineraryId, setExpandedItineraryId] = useState(null); // State to track which trek's description is expanded
     const navigate = useNavigate();
 
     const fetchItineraries = async () => {
@@ -29,6 +34,11 @@ const ViewItinerary = () => {
         navigate(`/edititinerary/${id}`);
     };
 
+    // Toggle expanded description
+    const toggleDescription = (id) => {
+        setExpandedItineraryId(expandedItineraryId === id ? null : id);
+    };
+
     const handlePrintPDF = async (itinerary) => {
         const doc = new jsPDF();
 
@@ -38,12 +48,14 @@ const ViewItinerary = () => {
         doc.text(`Total Days: ${itinerary.totalDays}`, 10, 30);
         doc.text(`Pickup: ${itinerary.pickup}`, 10, 40);
         doc.text(`Drop: ${itinerary.drop}`, 10, 50);
-        doc.text(`Description: ${itinerary.description}`, 10, 60);
 
-        // Handle adding images to the PDF
-        const photoX = 10; // X coordinate for the photos
-        let photoY = 70; // Y coordinate for the photos, starting below the description
+        // Split the description into multiple lines if necessary
+    const descriptionLines = doc.splitTextToSize(itinerary.description, 180); // 180 is the max width
+    doc.text(descriptionLines, 10, 60); // Adjust Y-position as needed
 
+    // Handle adding images to the PDF
+    const photoX = 10; // X coordinate for the photos
+    let photoY = 70 + descriptionLines.length * 10; // Adjust Y position after description
         // Loop through the photos and add them one by one
         for (const photo of itinerary.photos) {
             const fullPhotoUrl = `http://localhost:5000/${photo}`; // Construct full URL
@@ -106,7 +118,7 @@ const ViewItinerary = () => {
                                     <img
                                         key={index}
                                         src={`http://localhost:5000/${photo}`} // Adjust the URL as needed
-                                        alt={`Itinerary photo ${index + 1}`}
+                                        alt={`Itinerary ${index + 1}`}
                                         style={{ width: '50px', height: '50px', margin: '5px' }} // Adjust size and margin as needed
                                     />
                                 ))}
@@ -116,11 +128,59 @@ const ViewItinerary = () => {
                             <td>{itinerary.totalDays}</td>
                             <td>{itinerary.pickup}</td>
                             <td>{itinerary.drop}</td>
-                            <td>{itinerary.description}</td>
+                            <td style={{ maxWidth: "600px" }}>
+                                {expandedItineraryId === itinerary._id
+                                    ? (
+                                        <>
+                                            <p>{itinerary.description}</p>
+                                            <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(itinerary._id)}>Show Less</p> </b>
+
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <p>{itinerary.description.substring(0, 100)}...</p>
+                                            <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(itinerary._id)}>See More</p> </b>
+
+
+                                        </>
+                                    )
+                                }
+                            </td>
                             <td>
-                                <button onClick={() => handleEdit(itinerary._id)}>Edit</button>
-                                <button onClick={() => handleDelete(itinerary._id)}>Delete</button>
-                                <button onClick={() => handlePrintPDF(itinerary)}>Print PDF</button>
+                                <Tooltip title="Edit" placement="top">
+                                    <IconButton onClick={() => handleEdit(itinerary._id)}
+                                        sx={{
+                                            color: 'inherit',
+                                            '&:hover': {
+                                                color: 'blue', // Change color on hover
+                                            },
+                                        }}>
+                                        <EditOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete" placement="bottom">
+                                    <IconButton onClick={() => handleDelete(itinerary._id)}
+                                        sx={{
+                                            color: 'inherit',
+                                            '&:hover': {
+                                                color: 'red', // Change color on hover
+                                            },
+                                        }}>
+                                        <DeleteOutlineOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Print" placement="bottom">
+                                    <IconButton onClick={() => handlePrintPDF(itinerary)}
+                                        sx={{
+                                            color: 'inherit',
+                                            '&:hover': {
+                                                color: 'white', // Change color on hover
+                                            },
+                                        }}>
+                                        <PrintOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </td>
                         </tr>
                     ))}

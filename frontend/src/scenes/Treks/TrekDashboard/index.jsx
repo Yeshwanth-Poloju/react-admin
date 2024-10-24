@@ -116,7 +116,7 @@ const TrekDashboard = () => {
               <img
                 key={index}
                 src={`http://localhost:5000/${photo}`}
-                alt={`Trek photo ${index + 1}`}
+                alt={`Trek ${index + 1}`}
                 style={{ width: '100%', marginTop: '10px' }}
               />
             ))}

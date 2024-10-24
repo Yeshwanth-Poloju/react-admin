@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const ViewAdmin = () => {
     const [admins, setAdmins] = useState([]);
@@ -23,7 +26,7 @@ const ViewAdmin = () => {
             console.error('Error deleting admin', error);
         }
     };
-    
+
 
     const handleEdit = (id) => {
         navigate(`/editadmin/${id}`);
@@ -52,8 +55,30 @@ const ViewAdmin = () => {
                             <td>{admin.email}</td>
                             <td>{admin.username}</td>
                             <td>
-                                <button onClick={() => handleEdit(admin._id)}>Edit</button>
-                                <button onClick={() => handleDelete(admin._id)}>Delete</button>
+                                <Tooltip title="Edit" placement="top">
+                                    <IconButton onClick={() => handleEdit(admin._id)}
+                                        sx={{
+                                            color: 'inherit',
+                                            '&:hover': {
+                                                color: 'blue', // Change color on hover
+                                            },
+                                        }}>
+                                        <EditOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete" placement="bottom">
+                                    <IconButton
+                                        onClick={() => handleDelete(admin._id)}
+                                        sx={{
+                                            color: 'inherit',
+                                            '&:hover': {
+                                                color: 'red', // Change color on hover
+                                            },
+                                        }}
+                                    >
+                                        <DeleteOutlineOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </td>
                         </tr>
                     ))}

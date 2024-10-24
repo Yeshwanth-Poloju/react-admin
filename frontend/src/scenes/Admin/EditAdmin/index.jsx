@@ -64,7 +64,7 @@ const EditAdmin = () => {
             />
             <input
                 type="password"
-                placeholder="New Password (optional)"
+                placeholder="Set Your New Password (Optional)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />

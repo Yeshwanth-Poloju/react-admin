@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const ViewTreks = () => {
   const [treks, setTreks] = useState([]);
+  const [expandedTrekId, setExpandedTrekId] = useState(null); // State to track which trek's description is expanded
   const navigate = useNavigate();
 
   // Fetch all treks from the backend
@@ -31,6 +35,11 @@ const ViewTreks = () => {
     navigate(`/editTrek/${trek._id}`); // Redirect to the edit trek page
   };
 
+  // Toggle expanded description
+  const toggleDescription = (id) => {
+    setExpandedTrekId(expandedTrekId === id ? null : id);
+  };
+
   useEffect(() => {
     fetchTreks();
   }, []);
@@ -41,12 +50,10 @@ const ViewTreks = () => {
       <table>
         <thead>
           <tr>
+            <th>Photo</th>
             <th>Trek Name</th>
-            <th>Altitude</th>
-            <th>Pickup Point</th>
             <th>Drop Point</th>
             <th>Price Per Person</th>
-            <th>Inclusions</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
@@ -54,16 +61,55 @@ const ViewTreks = () => {
         <tbody>
           {treks.map((trek) => (
             <tr key={trek._id}>
+              <td>
+                {trek.photos.map((photo, index) => (
+                  <img
+                    key={index}
+                    src={`http://localhost:5000/${photo}`} // Adjust the URL as needed
+                    alt={`Trek ${index + 1}`}
+                    style={{ width: '50px', height: '50px', margin: '5px' }} // Adjust size and margin as needed
+                  />
+                ))}
+              </td>
               <td>{trek.name}</td>
-              <td>{trek.altitude} m</td>
-              <td>{trek.pickupPoint}</td>
               <td>{trek.dropPoint}</td>
               <td>${trek.pricePerPerson}</td>
-              <td>{trek.inclusion}</td>
-              <td>{trek.description}</td>
+              <td style={{ maxWidth: "600px" }}>
+                {expandedTrekId === trek._id ? (
+                  <>
+                    <p>{trek.description}</p>
+                    <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(trek._id)}>Show Less</p> </b>
+                  </>
+                ) : (
+                  <>
+                    <p>{trek.description.substring(0, 100)}...</p>
+                    <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(trek._id)}>See More</p> </b>
+                  </>
+                )}
+              </td>
               <td>
-                <button className="edit-button" onClick={() => handleEdit(trek)}>Edit</button>
-                <button className="delete-button" onClick={() => handleDelete(trek._id)}>Delete</button>
+                <Tooltip title="Edit" placement="top">
+                  <IconButton onClick={() => handleEdit(trek)}
+                    sx={{
+                      color: 'inherit',
+                      '&:hover': {
+                        color: 'blue', // Change color on hover
+                      },
+                    }}>
+                    <EditOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete" placement="bottom">
+                  <IconButton onClick={() => handleDelete(trek._id)}
+                    sx={{
+                      color: 'inherit',
+                      '&:hover': {
+                        color: 'red', // Change color on hover
+                      },
+                    }}>
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
               </td>
             </tr>
           ))}

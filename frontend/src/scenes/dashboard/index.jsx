@@ -10,6 +10,7 @@ import ItineraryDashboard from "../Itinerary/ItineraryDashboard";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -34,6 +35,8 @@ const Dashboard = () => {
 
       {/* GRID & CHARTS */}
       <Box
+        height="75vh" // Set a fixed height for the dashboard container
+        overflow="auto" // Enable scrolling when content overflows
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
@@ -49,24 +52,23 @@ const Dashboard = () => {
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                Trips
-              </Typography>
-            </Box>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              Trips
+            </Typography>
           </Box>
           <Box height="250px" m="20px">
             <ViewTrips />
           </Box>
         </Box>
+
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -76,19 +78,17 @@ const Dashboard = () => {
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                Treks
-              </Typography>
-            </Box>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              Treks
+            </Typography>
           </Box>
           <Box height="250px" m="20px">
             <TrekDashboard />
@@ -109,20 +109,19 @@ const Dashboard = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                Itineraries
-              </Typography>
-            </Box>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              Itineraries
+            </Typography>
           </Box>
           <Box height="250px" m="20px">
             <ItineraryDashboard />
           </Box>
         </Box>
+
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -132,19 +131,17 @@ const Dashboard = () => {
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
           >
-            <Box>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                Adventures
-              </Typography>
-            </Box>
+            <Typography
+              variant="h3"
+              fontWeight="bold"
+              color={colors.greenAccent[500]}
+            >
+              Adventures
+            </Typography>
           </Box>
           <Box height="250px" m="20px">
             <AdventureDashboard />

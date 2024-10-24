@@ -116,7 +116,7 @@ const ItineraryDashboard = () => {
               <img
                 key={index}
                 src={`http://localhost:5000/${photo}`}
-                alt={`Itinerary photo ${index + 1}`}
+                alt={`Itinerary ${index + 1}`}
                 style={{ width: '100%', marginTop: '10px' }}
               />
             ))}

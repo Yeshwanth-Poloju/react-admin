@@ -2,9 +2,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './viewtrip.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
+import { IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-const ViewTrips = ({ onEdit, onDelete }) => {
+
+const ViewTrips = () => {
   const [trips, setTrips] = useState([]);
+  const navigate = useNavigate();
+
 
   const fetchTrips = async () => {
     try {
@@ -13,6 +20,21 @@ const ViewTrips = ({ onEdit, onDelete }) => {
     } catch (error) {
       console.error('Failed to fetch trips:', error);
     }
+  };
+
+  // Handle deleting a trek
+  const onDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/trips/${id}`);
+      fetchTrips(); // Refresh the list after deletion
+    } catch (error) {
+      console.error('Failed to delete trip:', error);
+    }
+  };
+
+  // Handle edit button click
+  const onEdit = (trip) => {
+    navigate(`/editTrips/${trip._id}`); // Redirect to the edit trek page
   };
 
   useEffect(() => {
@@ -42,8 +64,28 @@ const ViewTrips = ({ onEdit, onDelete }) => {
               <td>{trip.to}</td>
               <td>{trip.price}</td>
               <td>
-                <button className="edit-button" onClick={() => onEdit(trip)}>Edit</button>
-                <button className="delete-button" onClick={() => onDelete(trip._id)}>Delete</button>
+                <Tooltip title="Edit" placement="top">
+                  <IconButton onClick={() => onEdit(trip)}
+                    sx={{
+                      color: 'inherit',
+                      '&:hover': {
+                        color: 'blue', // Change color on hover
+                      },
+                    }}>
+                    <EditOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete" placement="bottom">
+                  <IconButton onClick={() => onDelete(trip._id)}
+                    sx={{
+                      color: 'inherit',
+                      '&:hover': {
+                        color: 'red', // Change color on hover
+                      },
+                    }}>
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
               </td>
             </tr>
           ))}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './AddAdventure.css'
 
 const AddAdventure = ({ onAdventureAdded }) => {
   const [formData, setFormData] = useState({
@@ -40,15 +41,18 @@ const AddAdventure = ({ onAdventureAdded }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="name" placeholder="Name" onChange={handleInputChange} required />
-      <input type="number" name="price" placeholder="Price" onChange={handleInputChange} required />
-      <input type="text" name="location" placeholder="Location" onChange={handleInputChange} required />
-      <input type="number" name="altitude" placeholder="Altitude" onChange={handleInputChange} required />
-      <textarea name="description" placeholder="Description" onChange={handleInputChange} required></textarea>
-      <input type="file" name="photos" multiple onChange={handleFileChange} required />
-      <button type="submit">Add Adventure</button>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <h2>Add a Adventure</h2>
+        <input type="text" name="name" placeholder="Name" onChange={handleInputChange} required />
+        <input type="number" name="price" placeholder="Price" onChange={handleInputChange} required />
+        <input type="text" name="location" placeholder="Location" onChange={handleInputChange} required />
+        <input type="number" name="altitude" placeholder="Altitude" onChange={handleInputChange} required />
+        <textarea name="description" placeholder="Description" onChange={handleInputChange} required></textarea>
+        <input type="file" name="photos" multiple onChange={handleFileChange} required />
+        <button type="submit">Add Adventure</button>
+      </form>
+    </div>
   );
 };
 
