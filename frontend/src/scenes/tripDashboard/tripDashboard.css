@@ -1,0 +1,44 @@
+/* /frontend/src/components/tripDashboard.css */
+
+.table-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #1b0c89;
+    font-weight: bold;
+  }
+  
+  tr:hover {
+    background-color: #5711a8;
+  }
+  
+  @media (max-width: 600px) {
+    table {
+      width: 100%;
+    }
+  
+    th, td {
+      padding: 8px;
+      font-size: 14px;
+    }
+  }
+  

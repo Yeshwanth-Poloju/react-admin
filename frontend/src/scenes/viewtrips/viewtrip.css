@@ -1,0 +1,20 @@
+/* Button styles without hover effect */
+.edit-button {
+    background-color: rgb(138, 92, 6);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-button {
+    background-color: rgb(103, 6, 6);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

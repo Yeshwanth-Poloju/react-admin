@@ -1,0 +1,52 @@
+/* TrekDashboard.css */
+.trek-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .trek-card {
+    position: relative; /* Positioning for the overlay */
+    background-color: #cf0000;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden; /* Hide overflow for images */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .trek-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .image-gallery {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .trek-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Maintain aspect ratio */
+    max-height: 150px; /* Limit height to keep a uniform card size */
+  }
+  
+  .info-overlay {
+    padding: 10px;
+    text-align: left; /* Align text to the left */
+  }
+  
+  h3 {
+    margin: 5px 0; /* Reduced margin for the name */
+  }
+  
+  p {
+    margin: 3px 0; /* Slight margin for the details */
+  }
+  
