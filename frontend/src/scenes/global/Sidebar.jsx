@@ -11,6 +11,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import LandscapeOutlinedIcon from '@mui/icons-material/LandscapeOutlined';
 import AirportShuttleOutlinedIcon from '@mui/icons-material/AirportShuttleOutlined';
 import HikingOutlinedIcon from '@mui/icons-material/HikingOutlined';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -75,7 +76,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  Admin 
+                  Admin
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -177,6 +178,14 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
+            <Item
+              title="Main Dashboard"
+              to="/"
+              icon={<DashboardIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -209,7 +218,7 @@ const Sidebar = () => {
             />
 
 
-          
+
 
             <Typography
               variant="h6"
@@ -355,8 +364,8 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            
-            
+
+
           </Box>
         </Menu>
       </ProSidebar>

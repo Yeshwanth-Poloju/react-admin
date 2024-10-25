@@ -10,6 +10,7 @@ const vehicleRoutes = require('./routes/vehicleRoutes');
 const adventureRoutes = require('./routes/adventureRoutes');
 const itineraryRoutes = require('./routes/itineraryRoutes');
 const adminRoutes = require('./routes/adminRoutes'); // Import admin routes
+const payment = require('./routes/payment');
 
 
 const app = express();
@@ -29,6 +30,8 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/adventures', adventureRoutes);
 // Use itinerary routes
 app.use('/api', itineraryRoutes);
+
+app.use('/api/payment',payment);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
