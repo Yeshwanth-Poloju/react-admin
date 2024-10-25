@@ -1,10 +1,56 @@
 const Admin = require('../models/Admin'); // Make sure you have an Admin model
+const { client, verifyServiceSid } = require('../config/twilioConfig');
+
+// Send OTP
+exports.sendOtp = async (req, res) => {
+    const { phoneNumber } = req.body;
+
+    try {
+        // Send OTP using Twilio Verify
+        await client.verify.v2.services(verifyServiceSid)
+            .verifications
+            .create({
+                to: phoneNumber,
+                channel: 'sms'
+            });
+
+        return res.status(200).json({ message: 'OTP sent successfully' });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        return res.status(500).json({ message: 'Failed to send OTP', error });
+    }
+};
+
+// Verify OTP
+exports.verifyOtp = async (req, res) => {
+    const { phoneNumber, otp } = req.body;
+
+    try {
+        const verificationCheck = await client.verify.v2.services(verifyServiceSid)
+            .verificationChecks
+            .create({
+                to: phoneNumber,
+                code: otp
+            });
+
+        if (verificationCheck.status === 'approved') {
+            return res.status(200).json({ message: 'OTP verified successfully' });
+        }
+
+        return res.status(400).json({ message: 'Invalid or expired OTP' });
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        return res.status(500).json({ message: 'Failed to verify OTP', error });
+    }
+};
+
+
 
 // Create a new admin
 exports.createAdmin = async (req, res) => {
     try {
-        const { name, email, username, password } = req.body;
-        const newAdmin = new Admin({ name, email, username, password });
+        const { name, email, username, password, phoneNumber } = req.body;
+        const newAdmin = new Admin({ name, email, username, password, phoneNumber });
         await newAdmin.save();
         res.status(201).json({ message: 'Admin created successfully', admin: newAdmin });
     } catch (error) {

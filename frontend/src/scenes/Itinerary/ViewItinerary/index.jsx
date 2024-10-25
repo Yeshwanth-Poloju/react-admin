@@ -42,35 +42,59 @@ const ViewItinerary = () => {
     const handlePrintPDF = async (itinerary) => {
         const doc = new jsPDF();
 
-        // Add content to the PDF
-        doc.text(`Itinerary: ${itinerary.name}`, 10, 10);
-        doc.text(`Price: $${itinerary.price}`, 10, 20);
-        doc.text(`Total Days: ${itinerary.totalDays}`, 10, 30);
-        doc.text(`Pickup: ${itinerary.pickup}`, 10, 40);
-        doc.text(`Drop: ${itinerary.drop}`, 10, 50);
+        // Add border to the page
+        doc.setLineWidth(0.5);
+        doc.rect(5, 5, 200, 287); // Adjust dimensions for the border (x, y, width, height)
 
-        // Split the description into multiple lines if necessary
-    const descriptionLines = doc.splitTextToSize(itinerary.description, 180); // 180 is the max width
-    doc.text(descriptionLines, 10, 60); // Adjust Y-position as needed
+        // Print date on the top right corner
+        const printDate = new Date().toLocaleDateString();
+        doc.text(`Print Date: ${printDate}`, 145, 12); // Right-aligned
 
-    // Handle adding images to the PDF
-    const photoX = 10; // X coordinate for the photos
-    let photoY = 70 + descriptionLines.length * 10; // Adjust Y position after description
-        // Loop through the photos and add them one by one
+        // Handle adding images to the PDF
+        const fullWidth = 200; // Full width for images
+        let photoY = 20; // Starting Y position after the date
+
         for (const photo of itinerary.photos) {
             const fullPhotoUrl = `http://localhost:5000/${photo}`; // Construct full URL
             try {
                 const image = await loadImage(fullPhotoUrl); // Load image as base64
-                doc.addImage(image, 'JPEG', photoX, photoY, 60, 40); // Adjust size as needed
-                photoY += 50; // Adjust Y position for the next image
+                const imageWidth = 180; // Set image width (account for padding)
+                const imageHeight = 80; // Set image height
+                const xPos = (fullWidth - imageWidth) / 2; // Calculate X position for center alignment
+
+                doc.addImage(image, 'JPEG', xPos, photoY, imageWidth, imageHeight); // Center aligned
+                photoY += imageHeight + 5; // Move down for the next image
             } catch (error) {
                 console.error('Failed to load image for PDF:', error);
             }
         }
 
+        // Add Itinerary name after images
+        doc.setFontSize(18);
+        doc.text(`Itinerary: ${itinerary.name}`, 10, photoY + 4); // Adjust Y position for itinerary name
+        photoY += 12; // Move down for the details
+
+        // Add other details with Unicode icons
+        const details = [
+            { label: 'Price:', value: `$${itinerary.price}`, icon: String.fromCharCode(0x1F4B5) }, // 💰
+            { label: 'Total Days:', value: itinerary.totalDays, icon: String.fromCharCode(0x1F4C5) }, // 📅
+            { label: 'Pickup:', value: itinerary.pickup, icon: String.fromCharCode(0x1F4CD) }, // 📍
+            { label: 'Drop:', value: itinerary.drop, icon: String.fromCharCode(0x1F697) }, // 🚗
+        ];
+
+        doc.setFontSize(12);
+        details.forEach((detail, index) => {
+            doc.text(`${detail.icon} ${detail.label} ${detail.value}`, 10, photoY + (index * 10)); // Adjust Y position for each detail
+        });
+
+        // Add description
+        const descriptionLines = doc.splitTextToSize(itinerary.description, 180); // 180 is the max width
+        doc.text(descriptionLines, 10, photoY + (details.length * 10)); // Adjust Y position for description
+
         // Save the PDF and trigger download
         doc.save(`itinerary-${itinerary._id}.pdf`);
     };
+
 
     // Helper function to load an image and return base64 data
     const loadImage = (url) => {
@@ -134,15 +158,12 @@ const ViewItinerary = () => {
                                         <>
                                             <p>{itinerary.description}</p>
                                             <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(itinerary._id)}>Show Less</p> </b>
-
                                         </>
                                     )
                                     : (
                                         <>
                                             <p>{itinerary.description.substring(0, 100)}...</p>
                                             <b> <p style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => toggleDescription(itinerary._id)}>See More</p> </b>
-
-
                                         </>
                                     )
                                 }

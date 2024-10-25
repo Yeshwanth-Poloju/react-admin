@@ -17,4 +17,10 @@ router.put('/edit/:id', adminController.updateAdmin);
 // Route for deleting admin
 router.delete('/delete/:id', adminController.deleteAdmin);
 
+// Route for sending OTP to admin's phone number
+router.post('/send-otp', adminController.sendOtp);
+
+// Route for verifying OTP
+router.post('/verify-otp', adminController.verifyOtp);
+
 module.exports = router;
