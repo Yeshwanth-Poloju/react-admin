@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
@@ -10,7 +10,7 @@ import Form from "./scenes/form";
 import Line from "./scenes/line";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
-import Login from "./scenes/login";
+import LoginSignup from "./scenes/LoginSignup";
 import Geography from "./scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
@@ -40,18 +40,24 @@ import ViewAdmin from './scenes/Admin/ViewAdmin';
 import EditAdmin from './scenes/Admin/EditAdmin';
 import AdminList from './scenes/Admin/AdminList';
 
+import AdminBookingDetails from "./scenes/Admin/AdminBookingDetails";
+
+
+
 
 function App() {
     const [theme, colorMode] = useMode();
     const [isSidebar, setIsSidebar] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation(); // Use useLocation to get current location
 
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <div className="app">
-                    <Sidebar isSidebar={isSidebar} />
+                    {/* Conditionally render Sidebar based on the current route */}
+                    {location.pathname !== '/login' && <Sidebar isSidebar={isSidebar} />}
                     <main className="content">
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
@@ -65,7 +71,7 @@ function App() {
                             <Route path="/faq" element={<FAQ />} />
                             <Route path="/calendar" element={<Calendar />} />
                             <Route path="/geography" element={<Geography />} />
-                            <Route path="/login" element={<Login />} />
+                            <Route path="/login" element={<LoginSignup />} />
                             <Route path="/trips" element={<AllTrips />} />
                             <Route path="/addtrips" element={<AddTrips />} />
                             <Route path="/viewtrips" element={<ViewTrips />} />
@@ -96,6 +102,7 @@ function App() {
                             <Route path="/admins" element={<ViewAdmin />} />
                             <Route path="/editadmin/:id" element={<EditAdmin />} />
                             <Route path="/dashboard" element={<AdminList />} />
+                            <Route path="/admin/bookings" element={<AdminBookingDetails />} />
                         </Routes>
                     </main>
                 </div>

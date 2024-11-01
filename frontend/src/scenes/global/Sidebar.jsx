@@ -36,6 +36,9 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const userRole = localStorage.getItem('userRole'); // Retrieve user role
+  const userName = localStorage.getItem('userName'); // Retrieve user's name
+
 
   return (
     <Box
@@ -76,7 +79,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  Admin
+                  {userRole === "admin" ? "Admin" : "User"}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -103,10 +106,11 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Yeshwanth Poloju
+                  {userName || "User"} {/* Display logged-in user's name */}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Software Developer
+
+                  {userRole === "admin" ? "Administrator" : "Member"}
                 </Typography>
               </Box>
             </Box>
@@ -178,192 +182,246 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
-            <Item
-              title="Main Dashboard"
-              to="/"
-              icon={<DashboardIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {userRole === 'admin' && ( // Admin-specific items
+              <>
+                <Item
+                  title="Main Dashboard"
+                  to="/"
+                  icon={<DashboardIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              My Dashboard
-            </Typography>
+                <Item
+                  title="Bookings"
+                  to="/admin/bookings"
+                  icon={<DashboardIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="Admin Dashboard"
-              to="/dashboard"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  My Dashboard
+                </Typography>
 
-            <Item
-              title="View Admin"
-              to="/admins"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Add Admin"
-              to="/addadmin"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Admin Dashboard"
+                  to="/dashboard"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title="View Admin"
+                  to="/admins"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Add Admin"
+                  to="/addadmin"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Trip Content
+                </Typography>
+
+                <Item
+                  title="Trip Dashboard"
+                  to="/trips"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title="Add Trips"
+                  to="/addtrips"
+                  icon={<BarChartOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Edit Trips"
+                  to="/viewtrips"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
 
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Trek Content
+                </Typography>
 
+                <Item
+                  title="Trek Dashboard"
+                  to="/treks"
+                  icon={<HikingOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Trip Content
-            </Typography>
-            <Item
-              title="Trip Dasboard"
-              to="/trips"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Add Trips"
-              to="/addtrips"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Edit Trips"
-              to="/viewtrips"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Add Trek"
+                  to="/addTrek"
+                  icon={<HikingOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Edit Trek"
+                  to="/viewtreks"
+                  icon={<HikingOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Trek Content
-            </Typography>
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Transport
+                </Typography>
+                <Item
+                  title="Add Vehicle"
+                  to="/addvehicle"
+                  icon={<AirportShuttleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="View Vehicle"
+                  to="/viewvehicles"
+                  icon={<AirportShuttleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="Trek Dashboard"
-              to="/treks"
-              icon={<HikingOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Adventures
+                </Typography>
 
-            <Item
-              title="Add Trek"
-              to="/addTrek"
-              icon={<HikingOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Edit Trek"
-              to="/viewtreks"
-              icon={<HikingOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Adventure Dashboard"
+                  to="/adventuredashboard"
+                  icon={<LandscapeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Transport
-            </Typography>
-            <Item
-              title="Add Vehicle"
-              to="/addvehicle"
-              icon={<AirportShuttleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="View Vehicle"
-              to="/viewvehicles"
-              icon={<AirportShuttleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Add adventures"
+                  to="/addadventure"
+                  icon={<LandscapeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Adventures
-            </Typography>
+                <Item
+                  title="Edit adventures"
+                  to="/viewadventures"
+                  icon={<LandscapeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="Adventure Dashboard"
-              to="/adventuredashboard"
-              icon={<LandscapeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Itineraries
+                </Typography>
 
-            <Item
-              title="Add adventures"
-              to="/addadventure"
-              icon={<LandscapeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Itinerary Dashboard"
+                  to="/itinerarydashboard"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Item
-              title="Edit adventures"
-              to="/viewadventures"
-              icon={<LandscapeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Add Itinerary"
+                  to="/additinerary"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Edit Itineary"
+                  to="/viewitinerary"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Itineraries
-            </Typography>
-
-            <Item
-              title="Itinerary Dashboard"
-              to="/itinerarydashboard"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
-              title="Add Itinerary"
-              to="/additinerary"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Edit Itineary"
-              to="/viewitinerary"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                {/* Add more admin-specific items... */}
+              </>
+            )}
+            {userRole === 'user' && ( // User-specific items
+              <>
+                <Typography
+                  variant="h6"
+                  color={colors.grey[300]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  My Dashboard
+                </Typography>
+                <Item
+                  title="Trip Dashboard"
+                  to="/trips"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Trek Dashboard"
+                  to="/treks"
+                  icon={<HikingOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Adventure Dashboard"
+                  to="/adventuredashboard"
+                  icon={<LandscapeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Itinerary Dashboard"
+                  to="/itinerarydashboard"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                {/* Add more user-specific items... */}
+              </>
+            )}
 
 
           </Box>

@@ -13,7 +13,7 @@
   
   .trek-card {
     position: relative; /* Positioning for the overlay */
-    background-color: #cf0000;
+    background-color: #512f2f;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden; /* Hide overflow for images */

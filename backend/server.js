@@ -11,7 +11,8 @@ const adventureRoutes = require('./routes/adventureRoutes');
 const itineraryRoutes = require('./routes/itineraryRoutes');
 const adminRoutes = require('./routes/adminRoutes'); // Import admin routes
 const payment = require('./routes/payment');
-
+const bookingRoutes = require('./routes/bookingRoutes');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const app = express();
 connectDB();
@@ -32,6 +33,7 @@ app.use('/api/adventures', adventureRoutes);
 app.use('/api', itineraryRoutes);
 
 app.use('/api/payment',payment);
+app.use('/api/bookings', authMiddleware, bookingRoutes); // Ensure authMiddleware is applied correctly
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
