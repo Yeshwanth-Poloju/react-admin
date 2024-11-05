@@ -11,7 +11,7 @@ const LoginSignup = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(''); // State to store error messages
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); // Reset error message before each submit
@@ -46,6 +46,8 @@ const LoginSignup = () => {
             }
         } catch (err) {
             console.error(err);
+            const message = err.response?.data?.message || "Incorrect email or password.";
+            setError(message);
             setError(err.response?.data?.message || "An error occurred. Please try again."); // Handle specific error messages
         }
     };
